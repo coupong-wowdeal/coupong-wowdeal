@@ -1,6 +1,5 @@
 package coupong.nbc.coupongwowdeal.domain.coupon.model.v1
 
-import coupong.nbc.coupongwowdeal.domain.common.BaseAuditingEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -18,4 +17,4 @@ class Coupon(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-) : BaseAuditingEntity()
+)
