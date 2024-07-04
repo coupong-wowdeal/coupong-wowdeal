@@ -21,7 +21,7 @@ data class CouponResponse(
                 discountPrice = couponInfo.coupon.discountPrice,
                 issuedAt = couponInfo.issuedAt,
                 usedAt = couponInfo.usedAt!!,
-                expirationAt = couponInfo.expirationAt
+                expirationAt = couponInfo.coupon.expirationAt
             )
         }
     }

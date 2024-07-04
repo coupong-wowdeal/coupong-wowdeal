@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CouponServiceImpl(
     private val couponRepository: CouponRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : CouponService {
     override fun getCouponList(userPrincipal: UserPrincipal): List<CouponResponse> {
         val userId = userPrincipal.id
@@ -38,6 +38,7 @@ class CouponServiceImpl(
         val requestUser = (userRepository.findByIdOrNull(userId)
             ?: throw ModelNotFoundException("User", userId))
 
+        //TODO 만료시간 체크 로직 필요
         couponRepository.findCouponUserByCouponId(couponId, userId)
             ?.also { check(it.user.id == requestUser.id) { throw AccessDeniedException("no permission") } }
             ?.also { it.use() }
@@ -48,5 +49,10 @@ class CouponServiceImpl(
     override fun expireCoupon(couponId: Long) {
         couponRepository.couponUserDelete(couponId)
         couponRepository.couponDelete(couponId)
+    }
+
+    @Transactional
+    override fun deleteExpiredCoupon() {
+        couponRepository.deleteExpiredCoupon()
     }
 }

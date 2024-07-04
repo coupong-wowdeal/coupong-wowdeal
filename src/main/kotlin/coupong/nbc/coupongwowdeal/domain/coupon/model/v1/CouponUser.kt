@@ -27,9 +27,6 @@ class CouponUser(
     val issuedAt: LocalDateTime,
 
     @Column
-    val expirationAt: LocalDateTime,
-
-    @Column
     var usedAt: LocalDateTime? = null,
 
     @Id
