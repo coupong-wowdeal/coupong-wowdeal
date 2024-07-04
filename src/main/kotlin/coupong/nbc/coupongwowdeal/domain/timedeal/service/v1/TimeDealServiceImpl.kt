@@ -5,6 +5,7 @@ import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.CreateTimeDealRequ
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.UpdateTimeDealRequest
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealCouponResponse
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealResponse
+import coupong.nbc.coupongwowdeal.domain.timedeal.repository.v1.TimeDealJpaRepository
 import coupong.nbc.coupongwowdeal.domain.timedeal.repository.v1.TimeDealRepository
 import coupong.nbc.coupongwowdeal.exception.ModelNotFoundException
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
