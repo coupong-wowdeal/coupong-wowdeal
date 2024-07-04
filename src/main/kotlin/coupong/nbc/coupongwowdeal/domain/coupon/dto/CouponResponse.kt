@@ -9,7 +9,7 @@ data class CouponResponse(
     val couponName: String,
     val discountPrice: Int,
     val issuedAt: LocalDateTime,
-    val expirationAt: LocalDateTime
+    val expirationAt: LocalDateTime,
     val usedAt: LocalDateTime?,
 ) {
     companion object {

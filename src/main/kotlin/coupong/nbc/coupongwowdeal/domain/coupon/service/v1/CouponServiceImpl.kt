@@ -54,9 +54,9 @@ class CouponServiceImpl(
         val requestUser = (userRepository.findByIdOrNull(userId)
             ?: throw ModelNotFoundException("User", userId))
 
-        //TODO 만료시간 체크 로직 필요
         couponRepository.findCouponUserByCouponId(couponId, userId)
             ?.also { check(it.user.id == requestUser.id) { throw AccessDeniedException("no permission") } }
+            ?.also { check(!it.isExpired()) { throw IllegalStateException("Coupon is expired") } }
             ?.also { it.use() }
             ?: throw ModelNotFoundException("CouponUser", couponId)
     }
