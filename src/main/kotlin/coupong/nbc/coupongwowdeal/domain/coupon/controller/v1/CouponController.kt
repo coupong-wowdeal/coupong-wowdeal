@@ -44,7 +44,7 @@ class CouponController(
             .body(couponService.expireCoupon(couponId))
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     fun deleteExpiredCoupon() {
         couponService.deleteExpiredCoupon()
     }
