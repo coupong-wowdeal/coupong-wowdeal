@@ -14,6 +14,12 @@ class Coupon(
     @Column
     val discountPrice: Int,
 
+    @Column
+    val totalQuantity: Int,
+
+    @Column
+    var currentQuantity: Int,
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
