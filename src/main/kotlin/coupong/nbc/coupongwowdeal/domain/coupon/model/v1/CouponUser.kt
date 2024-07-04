@@ -35,4 +35,11 @@ class CouponUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
-)
+) {
+    fun use() {
+        if (this.isUsed) throw IllegalStateException()
+
+        this.isUsed = true
+        this.usedAt = LocalDateTime.now()
+    }
+}

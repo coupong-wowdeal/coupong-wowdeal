@@ -1,5 +1,6 @@
 package coupong.nbc.coupongwowdeal.domain.coupon.dto
 
-data class CreateCouponRequest(
-    val couponCode: String,
+data class CouponRequest(
+    val name: String,
+    val discountPrice: Int
 )
