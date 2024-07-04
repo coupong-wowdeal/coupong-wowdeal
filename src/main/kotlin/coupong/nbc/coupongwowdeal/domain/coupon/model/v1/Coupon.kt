@@ -20,6 +20,9 @@ class Coupon(
     @Column
     var currentQuantity: Int,
 
+    @Column
+    var expirationAt: LocalDateTime,
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,

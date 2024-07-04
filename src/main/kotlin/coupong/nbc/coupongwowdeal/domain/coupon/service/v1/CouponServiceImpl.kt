@@ -26,10 +26,23 @@ class CouponServiceImpl(
         TODO("CouponQuantity 생성")
     }
 
-    override fun issueCoupon(): CouponResponse {
-        TODO("발급 이력 확인")
-        TODO("쿠폰 재고 확인")
-        TODO("유저에게 쿠폰을 발급한다.")
+    @Transactional
+    override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
+        check(
+            !couponRepository.isCouponIssued(
+                couponId,
+                userId
+            )
+        ) { throw IllegalStateException("User already issue coupon") }
+
+        val coupon = couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException("coupon", couponId)
+        check(coupon.hasQuantity()) { throw IllegalStateException("Coupon has no quantity") }
+
+        val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
+
+        return couponRepository.issueCouponToUser(coupon, user)
+            .also { coupon.decreaseQuantity() }
+            .let { CouponResponse.toResponse(it) }
     }
 
     @Transactional
