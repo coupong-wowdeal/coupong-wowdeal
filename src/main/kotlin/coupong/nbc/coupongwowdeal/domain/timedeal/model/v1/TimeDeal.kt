@@ -1,14 +1,13 @@
 package coupong.nbc.coupongwowdeal.domain.timedeal.model.v1
 
 import coupong.nbc.coupongwowdeal.domain.common.BaseAuditingEntity
-import coupong.nbc.coupongwowdeal.domain.coupon.model.v1.Coupon
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.ForeignKey
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToOne
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 

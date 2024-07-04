@@ -36,7 +36,7 @@ class TimeDealController(
     @PutMapping("{timeDealId}")
     fun updateTimeDeal(
         @PathVariable timeDealId: Long,
-        @RequestBody timeDealUpdate: TimeDealUpdate
+        @RequestBody timeDealUpdate: UpdateTimeDealRequest
     ): ResponseEntity<TimeDealResponse> {
         return ResponseEntity.status(HttpStatus.OK)
             .body(timeDealService.updateTimeDeal(timeDealId, timeDealUpdate))

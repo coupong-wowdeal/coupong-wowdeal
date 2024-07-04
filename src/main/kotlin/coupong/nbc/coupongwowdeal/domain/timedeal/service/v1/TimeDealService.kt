@@ -28,7 +28,7 @@ class TimeDealService(
         return timeDealRepository.findAll().map { TimeDealResponse.from(it) }
     }
 
-    fun updateTimeDeal(timeDealId: Long, timeDealUpdate: TimeDealUpdate): TimeDealResponse? {
+    fun updateTimeDeal(timeDealId: Long, timeDealUpdate: UpdateTimeDealRequest): TimeDealResponse? {
         val timeDeal = timeDealRepository.findById(timeDealId).orElseThrow()
         timeDeal.update(timeDealUpdate.name, timeDealUpdate.openedAt, timeDealUpdate.closedAt)
         return TimeDealResponse.from(timeDeal)
