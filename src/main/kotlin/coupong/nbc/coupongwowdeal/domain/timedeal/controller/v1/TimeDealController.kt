@@ -8,6 +8,7 @@ import coupong.nbc.coupongwowdeal.domain.timedeal.service.v1.TimeDealServiceImpl
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -29,7 +30,7 @@ class TimeDealController(
         @RequestBody timeDealCreate: CreateTimeDealRequest
     ): ResponseEntity<TimeDealResponse> {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(timeDealService.createTimeDeal(timeDealCreate))
+            .body(timeDealService.createTimeDeal(userPrincipal, timeDealCreate))
     }
 
     @GetMapping
