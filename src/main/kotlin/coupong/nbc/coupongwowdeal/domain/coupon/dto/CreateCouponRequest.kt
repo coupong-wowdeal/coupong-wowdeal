@@ -1,6 +1,21 @@
 package coupong.nbc.coupongwowdeal.domain.coupon.dto
 
-data class CouponRequest(
+import coupong.nbc.coupongwowdeal.domain.coupon.model.v1.Coupon
+import java.time.LocalDateTime
+
+data class CreateCouponRequest(
     val name: String,
-    val discountPrice: Int
-)
+    val expirationAt: LocalDateTime,
+    val discountPrice: Int,
+    val totalQuantity: Int,
+) {
+    fun toCoupon(): Coupon {
+        return Coupon(
+            name = name,
+            discountPrice = discountPrice,
+            totalQuantity = totalQuantity,
+            currentQuantity = totalQuantity,
+            expirationAt = expirationAt
+        )
+    }
+}

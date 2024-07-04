@@ -33,6 +33,10 @@ class CouponUser(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 ) {
+    fun isExpired(): Boolean {
+        return this.coupon.expirationAt.isBefore(LocalDateTime.now())
+    }
+
     fun use() {
         if (this.isUsed) throw IllegalStateException()
 

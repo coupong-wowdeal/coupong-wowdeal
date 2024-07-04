@@ -1,6 +1,8 @@
 package coupong.nbc.coupongwowdeal.domain.coupon.service.v1
 
+import coupong.nbc.coupongwowdeal.domain.coupon.dto.CouponInfoResponse
 import coupong.nbc.coupongwowdeal.domain.coupon.dto.CouponResponse
+import coupong.nbc.coupongwowdeal.domain.coupon.dto.CreateCouponRequest
 import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.CouponRepository
 import coupong.nbc.coupongwowdeal.domain.user.repository.v1.UserRepository
 import coupong.nbc.coupongwowdeal.exception.AccessDeniedException
@@ -21,15 +23,29 @@ class CouponServiceImpl(
             .map { CouponResponse.toResponse(it) }
     }
 
-    override fun createCoupon() {
-        TODO("Coupon 생성")
-        TODO("CouponQuantity 생성")
+    override fun createCoupon(request: CreateCouponRequest): CouponInfoResponse {
+        return request.toCoupon()
+            .let { couponRepository.save(it) }
+            .let { CouponInfoResponse.toResponse(it) }
     }
 
-    override fun issueCoupon(): CouponResponse {
-        TODO("발급 이력 확인")
-        TODO("쿠폰 재고 확인")
-        TODO("유저에게 쿠폰을 발급한다.")
+    @Transactional
+    override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
+        check(
+            !couponRepository.isCouponIssued(
+                couponId,
+                userId
+            )
+        ) { throw IllegalStateException("User already issue coupon") }
+
+        val coupon = couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException("coupon", couponId)
+        check(coupon.hasQuantity()) { throw IllegalStateException("Coupon has no quantity") }
+
+        val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
+
+        return couponRepository.issueCouponToUser(coupon, user)
+            .also { coupon.decreaseQuantity() }
+            .let { CouponResponse.toResponse(it) }
     }
 
     @Transactional
@@ -38,9 +54,9 @@ class CouponServiceImpl(
         val requestUser = (userRepository.findByIdOrNull(userId)
             ?: throw ModelNotFoundException("User", userId))
 
-        //TODO 만료시간 체크 로직 필요
         couponRepository.findCouponUserByCouponId(couponId, userId)
             ?.also { check(it.user.id == requestUser.id) { throw AccessDeniedException("no permission") } }
+            ?.also { check(!it.isExpired()) { throw IllegalStateException("Coupon is expired") } }
             ?.also { it.use() }
             ?: throw ModelNotFoundException("CouponUser", couponId)
     }

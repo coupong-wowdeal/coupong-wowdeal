@@ -7,4 +7,5 @@ interface CouponUserJpaRepository : JpaRepository<CouponUser, Long> {
     fun findByUserId(userId: Long): List<CouponUser>
     fun findByCouponIdAndUserId(couponId: Long, userId: Long): CouponUser?
     fun deleteByCouponId(couponId: Long)
+    fun existsByCouponIdAndUserId(couponId: Long, userId: Long): Boolean
 }

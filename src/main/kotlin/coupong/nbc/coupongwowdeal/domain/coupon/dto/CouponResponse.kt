@@ -9,8 +9,8 @@ data class CouponResponse(
     val couponName: String,
     val discountPrice: Int,
     val issuedAt: LocalDateTime,
-    val usedAt: LocalDateTime,
-    val expirationAt: LocalDateTime
+    val expirationAt: LocalDateTime,
+    val usedAt: LocalDateTime?,
 ) {
     companion object {
         fun toResponse(couponInfo: CouponUser): CouponResponse {
@@ -20,8 +20,8 @@ data class CouponResponse(
                 couponName = couponInfo.coupon.name,
                 discountPrice = couponInfo.coupon.discountPrice,
                 issuedAt = couponInfo.issuedAt,
-                usedAt = couponInfo.usedAt!!,
-                expirationAt = couponInfo.coupon.expirationAt
+                expirationAt = couponInfo.coupon.expirationAt,
+                usedAt = couponInfo.usedAt,
             )
         }
     }
