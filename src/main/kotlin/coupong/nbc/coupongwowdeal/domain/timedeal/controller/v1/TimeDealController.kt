@@ -1,7 +1,7 @@
 package coupong.nbc.coupongwowdeal.domain.timedeal.controller.v1
 
-import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.TimeDealCreate
-import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.TimeDealUpdate
+import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.TimeDealCreateRequest
+import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.UpdateTimeDealRequest
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealResponse
 import coupong.nbc.coupongwowdeal.domain.timedeal.service.v1.TimeDealService
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ class TimeDealController(
 ) {
 
     @PostMapping
-    fun createTimeDeal(@RequestBody timeDealCreate: TimeDealCreate): ResponseEntity<TimeDealResponse> {
+    fun createTimeDeal(@RequestBody timeDealCreate: TimeDealCreateRequest): ResponseEntity<TimeDealResponse> {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(timeDealService.createTimeDeal(timeDealCreate))
     }

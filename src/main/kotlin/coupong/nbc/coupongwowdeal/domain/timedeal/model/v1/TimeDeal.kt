@@ -21,8 +21,8 @@ class TimeDeal(
 
     var closedAt: LocalDateTime,
 
-    @OneToOne
-    var coupon: Coupon
+    @JoinColumn(name = "coupon_id", foreignKey = ForeignKey(name = "fk_coupon_time_deal"))
+    var couponId: Long
 ) : BaseAuditingEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

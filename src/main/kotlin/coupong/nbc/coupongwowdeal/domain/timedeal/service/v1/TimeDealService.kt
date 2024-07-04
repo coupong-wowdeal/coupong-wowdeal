@@ -1,8 +1,7 @@
 package coupong.nbc.coupongwowdeal.domain.timedeal.service.v1
 
 import coupong.nbc.coupongwowdeal.domain.coupon.service.v1.CouponService
-import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.TimeDealCreate
-import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.TimeDealUpdate
+import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.UpdateTimeDealRequest
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealResponse
 import coupong.nbc.coupongwowdeal.domain.timedeal.repository.v1.TimeDealRepository
 import org.springframework.stereotype.Service
@@ -14,12 +13,10 @@ class TimeDealService(
     private val couponService: CouponService
 ) {
     @Transactional
-    fun createTimeDeal(timeDealCreate: TimeDealCreate): TimeDealResponse? {
+    fun createTimeDeal(request: CreateTimeDealRequest): TimeDealResponse? {
         val coupon =
-            couponService.createCoupon(timeDealCreate.toCoupon(timeDealCreate.couponName, timeDealCreate.discountPrice))
-        val timeDeal = timeDealCreate.toTimeDeal(
-            timeDealCreate.name, timeDealCreate.openedAt, timeDealCreate.closedAt, coupon
-        )
+            couponService.createCoupon(timeDealCreateRequest.toCouponCreateRequest())
+        val timeDeal = timeDealCreateRequest.toTimeDeal(coupon)
         timeDealRepository.save(timeDeal)
         return TimeDealResponse.from(timeDeal)
     }
