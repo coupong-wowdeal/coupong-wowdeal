@@ -33,8 +33,12 @@ class TimeDealServiceImpl(
 
     @Transactional
     override fun updateTimeDeal(timeDealId: Long, timeDealUpdate: UpdateTimeDealRequest): TimeDealResponse {
-        val timeDeal = timeDealRepository.findById(timeDealId).orElseThrow()
-        timeDeal.update(timeDealUpdate.name, timeDealUpdate.openedAt, timeDealUpdate.closedAt)
+        val timeDeal = timeDealRepository.findById(timeDealId) ?: throw ModelNotFoundException("timedeal", timeDealId)
+        timeDeal.update(
+            name = timeDealUpdate.name,
+            openedAt = timeDealUpdate.openedAt,
+            closedAt = timeDealUpdate.closedAt
+        )
         return TimeDealResponse.from(timeDeal)
     }
 
@@ -45,7 +49,7 @@ class TimeDealServiceImpl(
     @Transactional
     override fun issueCoupon(userPrincipal: UserPrincipal, timeDealId: Long): TimeDealCouponResponse {
         val timeDeal =
-            timeDealRepository.findByIdOrNull(timeDealId) ?: throw ModelNotFoundException("timedeal", timeDealId)
+            timeDealRepository.findById(timeDealId) ?: throw ModelNotFoundException("timedeal", timeDealId)
         check(LocalDateTime.now().isBefore(timeDeal.closedAt)) { throw IllegalStateException("Time deal not opened") }
         return couponService.issueCouponToUser(timeDeal.couponId, userPrincipal.id)
             .let { TimeDealCouponResponse.toResponse(timeDeal, it) }
