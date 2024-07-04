@@ -5,6 +5,7 @@ import coupong.nbc.coupongwowdeal.domain.coupon.service.v1.CouponService
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -41,5 +42,10 @@ class CouponController(
     ): ResponseEntity<Unit> {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
             .body(couponService.expireCoupon(couponId))
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    fun deleteExpiredCoupon() {
+        couponService.deleteExpiredCoupon()
     }
 }

@@ -7,4 +7,5 @@ interface CouponRepository {
     fun couponUserDelete(couponId: Long)
     fun findCouponUserByCouponId(couponId: Long, userId: Long): CouponUser?
     fun couponDelete(couponId: Long)
+    fun deleteExpiredCoupon()
 }
