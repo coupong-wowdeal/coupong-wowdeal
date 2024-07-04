@@ -1,6 +1,8 @@
 package coupong.nbc.coupongwowdeal.domain.coupon.service.v1
 
+import coupong.nbc.coupongwowdeal.domain.coupon.dto.CouponInfoResponse
 import coupong.nbc.coupongwowdeal.domain.coupon.dto.CouponResponse
+import coupong.nbc.coupongwowdeal.domain.coupon.dto.CreateCouponRequest
 import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.CouponRepository
 import coupong.nbc.coupongwowdeal.domain.user.repository.v1.UserRepository
 import coupong.nbc.coupongwowdeal.exception.AccessDeniedException
@@ -21,9 +23,10 @@ class CouponServiceImpl(
             .map { CouponResponse.toResponse(it) }
     }
 
-    override fun createCoupon() {
-        TODO("Coupon 생성")
-        TODO("CouponQuantity 생성")
+    override fun createCoupon(request: CreateCouponRequest): CouponInfoResponse {
+        return request.toCoupon()
+            .let { couponRepository.save(it) }
+            .let { CouponInfoResponse.toResponse(it) }
     }
 
     @Transactional
