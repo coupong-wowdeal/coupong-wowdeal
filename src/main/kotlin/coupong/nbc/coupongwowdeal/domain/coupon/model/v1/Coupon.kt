@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import java.time.LocalDateTime
 
 @Entity
 class Coupon(
@@ -19,6 +20,9 @@ class Coupon(
 
     @Column
     var currentQuantity: Int,
+
+    @Column
+    val expirationAt: LocalDateTime,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
