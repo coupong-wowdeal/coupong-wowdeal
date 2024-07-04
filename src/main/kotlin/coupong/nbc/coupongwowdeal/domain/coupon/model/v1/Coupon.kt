@@ -28,11 +28,16 @@ class Coupon(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 ) {
+    private fun validate() {
+        require(currentQuantity >= 0) { "Quantity must GOE 0" }
+    }
+
     fun hasQuantity(): Boolean {
         return currentQuantity > 0
     }
 
     fun decreaseQuantity() {
         currentQuantity -= 1
+        validate()
     }
 }

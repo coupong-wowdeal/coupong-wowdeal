@@ -24,10 +24,10 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorDto(e.message, "400"))
     }
 
-    @ExceptionHandler(RuntimeException::class)
-    fun handleRuntimeException(e: RuntimeException): ResponseEntity<ErrorDto> {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorDto(e.message, "500"))
-    }
+    // @ExceptionHandler(RuntimeException::class)
+    // fun handleRuntimeException(e: RuntimeException): ResponseEntity<ErrorDto> {
+    //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorDto(e.message, "500"))
+    // }
 
     @ExceptionHandler(AccessDeniedException::class)
     fun handleAccessDeniedException(e: AccessDeniedException): ResponseEntity<ErrorDto> {
