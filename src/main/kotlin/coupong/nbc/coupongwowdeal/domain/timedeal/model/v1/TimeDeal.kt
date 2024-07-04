@@ -1,5 +1,6 @@
 package coupong.nbc.coupongwowdeal.domain.timedeal.model.v1
 
+import coupong.nbc.coupongwowdeal.domain.common.BaseAuditingEntity
 import coupong.nbc.coupongwowdeal.domain.coupon.model.v1.Coupon
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -23,7 +24,7 @@ class TimeDeal(
 
     @OneToOne
     var coupon: Coupon
-) {
+) : BaseAuditingEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null

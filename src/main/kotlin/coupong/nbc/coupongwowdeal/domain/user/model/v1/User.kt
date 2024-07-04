@@ -1,5 +1,6 @@
 package coupong.nbc.coupongwowdeal.domain.user.model.v1
 
+import coupong.nbc.coupongwowdeal.domain.common.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -24,4 +25,4 @@ class User(
 
     @Enumerated(EnumType.STRING)
     val role: UserRole = UserRole.USER,
-)
+) : BaseTimeEntity()
