@@ -22,7 +22,7 @@ class Coupon(
     var currentQuantity: Int,
 
     @Column
-    var expirationAt: LocalDateTime,
+    val expirationAt: LocalDateTime,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

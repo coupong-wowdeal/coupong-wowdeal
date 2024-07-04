@@ -24,7 +24,7 @@ class CouponRepositoryImpl(
     }
 
     override fun couponUserDelete(couponId: Long) {
-        return couponUserJpaRepository.deleteByCouponId(couponId)
+        couponUserJpaRepository.deleteByCouponId(couponId)
     }
 
     override fun isCouponIssued(couponId: Long, userId: Long): Boolean {
@@ -32,7 +32,11 @@ class CouponRepositoryImpl(
     }
 
     override fun couponDelete(couponId: Long) {
-        return couponJpaRepository.deleteById(couponId)
+        couponJpaRepository.deleteById(couponId)
+    }
+
+    override fun deleteExpiredCoupon() {
+        couponQueryDslRepository.deleteExpiredCoupon()
     }
 
     override fun issueCouponToUser(coupon: Coupon, user: User): CouponUser {

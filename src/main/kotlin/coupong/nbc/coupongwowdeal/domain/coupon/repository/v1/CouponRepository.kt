@@ -13,4 +13,5 @@ interface CouponRepository {
     fun couponDelete(couponId: Long)
     fun issueCouponToUser(coupon: Coupon, user: User): CouponUser
     fun save(coupon: Coupon): Coupon
+    fun deleteExpiredCoupon()
 }

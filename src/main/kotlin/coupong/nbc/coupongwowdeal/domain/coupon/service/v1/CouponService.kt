@@ -12,4 +12,5 @@ interface CouponService {
     fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse
     fun useCoupon(couponId: Long, userPrincipal: UserPrincipal)
     fun expireCoupon(couponId: Long)
+    fun deleteExpiredCoupon()
 }
