@@ -16,7 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.runBlocking
 import net.jqwik.api.Arbitraries
-import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -24,18 +24,27 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDateTime
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CouponServiceDBTest @Autowired constructor(
     private val couponService: CouponService,
     private val couponUserJpaRepository: CouponUserJpaRepository,
     private val couponJpaRepository: CouponJpaRepository,
     private val userRepository: UserRepository
 ) {
+
+    @BeforeEach
+    fun setUp() {
+        couponUserJpaRepository.deleteAll()
+        couponJpaRepository.deleteAll()
+        userRepository.deleteAll()
+    }
 
     @Test
     fun `1000명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 발급된 쿠폰은 500개인지 확인`() {
@@ -45,24 +54,7 @@ class CouponServiceDBTest @Autowired constructor(
             val testQuantity = 500
             var successCount = 0
 
-            val nameSet = hashSetOf<String>()
-            while (nameSet.size < testUserSize) {
-                nameSet.add(Arbitraries.strings().ofMinLength(5).ofMaxLength(10).sample())
-            }
-
-            nameSet.forEach {
-                userRepository.saveAndFlush(User(username = it, password = "test"))
-            }
-
-            couponJpaRepository.saveAndFlush(
-                Coupon(
-                    name = "test",
-                    expirationAt = LocalDateTime.of(2030, 1, 1, 0, 0),
-                    totalQuantity = testQuantity,
-                    currentQuantity = testQuantity,
-                    discountPrice = 10000
-                )
-            )
+            saveTestData(testUserSize, testQuantity)
 
             // when
             val jobs = List(testUserSize) { index ->
@@ -99,24 +91,7 @@ class CouponServiceDBTest @Autowired constructor(
             val testQuantity = 500
             var successCount = 0
 
-            val nameSet = hashSetOf<String>()
-            while (nameSet.size < testUserSize) {
-                nameSet.add(Arbitraries.strings().ofMinLength(5).ofMaxLength(10).sample())
-            }
-
-            nameSet.forEach {
-                userRepository.saveAndFlush(User(username = it, password = "test"))
-            }
-
-            couponJpaRepository.saveAndFlush(
-                Coupon(
-                    name = "test",
-                    expirationAt = LocalDateTime.of(2030, 1, 1, 0, 0),
-                    totalQuantity = testQuantity,
-                    currentQuantity = testQuantity,
-                    discountPrice = 10000
-                )
-            )
+            saveTestData(testUserSize, testQuantity)
 
             // when
             val jobs = List(testUserSize) { index ->
@@ -153,24 +128,7 @@ class CouponServiceDBTest @Autowired constructor(
             val testQuantity = 500
             var successCount = 0
 
-            val nameSet = hashSetOf<String>()
-            while (nameSet.size < testUserSize) {
-                nameSet.add(Arbitraries.strings().ofMinLength(5).ofMaxLength(10).sample())
-            }
-
-            nameSet.forEach {
-                userRepository.saveAndFlush(User(username = it, password = "test"))
-            }
-
-            couponJpaRepository.saveAndFlush(
-                Coupon(
-                    name = "test",
-                    expirationAt = LocalDateTime.of(2030, 1, 1, 0, 0),
-                    totalQuantity = testQuantity,
-                    currentQuantity = testQuantity,
-                    discountPrice = 10000
-                )
-            )
+            saveTestData(testUserSize, testQuantity)
 
             // when
             val jobs = List(testUserSize) { index ->
@@ -199,11 +157,25 @@ class CouponServiceDBTest @Autowired constructor(
         }
     }
 
-    @AfterEach
-    fun tearDown() {
-        couponUserJpaRepository.deleteAll()
-        couponJpaRepository.deleteAll()
-        userRepository.deleteAll()
+    fun saveTestData(testUserSize: Int, testQuantity: Int) {
+        val nameSet = hashSetOf<String>()
+        while (nameSet.size < testUserSize) {
+            nameSet.add(Arbitraries.strings().ofMinLength(5).ofMaxLength(10).sample())
+        }
+
+        nameSet.forEach {
+            userRepository.saveAndFlush(User(username = it, password = "test"))
+        }
+
+        couponJpaRepository.saveAndFlush(
+            Coupon(
+                name = "test",
+                expirationAt = LocalDateTime.of(2030, 1, 1, 0, 0),
+                totalQuantity = testQuantity,
+                currentQuantity = testQuantity,
+                discountPrice = 10000
+            )
+        )
     }
 }
 
