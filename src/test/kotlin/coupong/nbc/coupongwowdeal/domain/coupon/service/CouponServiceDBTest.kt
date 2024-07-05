@@ -1,7 +1,7 @@
 package coupong.nbc.coupongwowdeal.domain.coupon.service
 
 import coupong.nbc.coupongwowdeal.domain.coupon.model.v1.Coupon
-import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.CouponRepository
+import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.coupon.CouponJpaRepository
 import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.couponuser.CouponUserJpaRepository
 import coupong.nbc.coupongwowdeal.domain.coupon.service.v1.CouponService
 import coupong.nbc.coupongwowdeal.domain.user.model.v1.User
@@ -18,8 +18,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
@@ -197,7 +195,7 @@ class CouponServiceDBTest @Autowired constructor(
             users.add(userRepository.saveAndFlush(User(username = it, password = "test")))
         }
 
-        val coupon = couponRepository.save(
+        val coupon = couponJpaRepository.save(
             Coupon(
                 name = "test",
                 expirationAt = LocalDateTime.of(2030, 1, 1, 0, 0),
