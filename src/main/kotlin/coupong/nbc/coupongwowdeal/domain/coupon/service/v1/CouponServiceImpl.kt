@@ -33,21 +33,20 @@ class CouponServiceImpl(
 
     @Transactional
     override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
-        check(
-            !couponRepository.isCouponIssued(
-                couponId,
-                userId
-            )
-        ) { throw IllegalStateException("User already issue coupon") }
+        return lockService.executeWithSpinLock("LOCK:COUPON:$couponId", 10000000000) {
+            check(!couponRepository.isCouponIssued(couponId, userId)) {
+                throw IllegalStateException("User already issue coupon")
+            }
 
-        val coupon = couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException("coupon", couponId)
-        check(coupon.hasQuantity()) { throw IllegalStateException("Coupon has no quantity") }
+            val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
+            val coupon = couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException("coupon", couponId)
+            check(coupon.hasQuantity()) { throw IllegalStateException("Coupon has no quantity") }
 
-        val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
-
-        return couponRepository.issueCouponToUser(coupon, user)
-            .also { coupon.decreaseQuantity() }
-            .let { CouponResponse.toResponse(it) }
+            couponRepository.issueCouponToUser(coupon, user)
+                .also { coupon.decreaseQuantity() }
+                .also { couponRepository.save(coupon) }
+                .let { CouponResponse.toResponse(it) }
+        } as CouponResponse
     }
 
     @Transactional
