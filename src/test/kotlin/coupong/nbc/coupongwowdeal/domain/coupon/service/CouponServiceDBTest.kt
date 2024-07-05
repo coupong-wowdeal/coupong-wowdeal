@@ -47,7 +47,7 @@ class CouponServiceDBTest @Autowired constructor(
     }
 
     @Test
-    fun `1000명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 발급된 쿠폰은 500개인지 확인`() {
+    fun `1000명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 발급된 쿠폰은 500개인지 확인 - Coroutine`() {
         runBlocking {
             // given
             val testUserSize = 1000
@@ -84,7 +84,7 @@ class CouponServiceDBTest @Autowired constructor(
     }
 
     @Test
-    fun `500명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 발급된 쿠폰은 500개인지 확인`() {
+    fun `500명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 발급된 쿠폰은 500개인지 확인 - Coroutine`() {
         runBlocking {
             // given
             val testUserSize = 500
@@ -121,7 +121,7 @@ class CouponServiceDBTest @Autowired constructor(
     }
 
     @Test
-    fun `200명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 발급된 쿠폰은 200개인지 확인`() {
+    fun `200명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 발급된 쿠폰은 200개인지 확인 - Coroutine`() {
         runBlocking {
             // given
             val testUserSize = 200
@@ -143,7 +143,6 @@ class CouponServiceDBTest @Autowired constructor(
             }
 
             jobs.joinAll()
-
             // then
             val findAllCouponUserSize = couponUserJpaRepository.findAll().size
             val finalCurrentQuantitiy = couponJpaRepository.findByIdOrNull(1L)?.currentQuantity
