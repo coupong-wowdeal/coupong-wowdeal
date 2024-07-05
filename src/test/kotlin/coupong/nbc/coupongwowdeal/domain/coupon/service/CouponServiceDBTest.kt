@@ -193,8 +193,8 @@ class CouponServiceDBTest @Autowired constructor(
             println("couponUserJpaRepository.findAll().size: $findAllCouponUserSize")
             println("couponJpaRepository.findByIdOrNull(1L)?.currentQuantity: $finalCurrentQuantitiy")
 
-            successCount shouldBe testQuantity
-            findAllCouponUserSize shouldBe testQuantity
+            successCount shouldBe testUserSize
+            findAllCouponUserSize shouldBe testUserSize
             finalCurrentQuantitiy shouldBe testQuantity - testUserSize
         }
     }
