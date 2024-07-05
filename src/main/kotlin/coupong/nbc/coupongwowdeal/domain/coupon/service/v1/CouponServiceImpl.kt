@@ -7,6 +7,7 @@ import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.CouponRepository
 import coupong.nbc.coupongwowdeal.domain.user.repository.v1.UserRepository
 import coupong.nbc.coupongwowdeal.exception.AccessDeniedException
 import coupong.nbc.coupongwowdeal.exception.ModelNotFoundException
+import coupong.nbc.coupongwowdeal.infra.redis.LockService
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class CouponServiceImpl(
     private val couponRepository: CouponRepository,
     private val userRepository: UserRepository,
+    private val lockService: LockService
 ) : CouponService {
     override fun getCouponList(userPrincipal: UserPrincipal): List<CouponResponse> {
         val userId = userPrincipal.id
@@ -69,6 +71,11 @@ class CouponServiceImpl(
 
     @Transactional
     override fun deleteExpiredCoupon() {
-        couponRepository.deleteExpiredCoupon()
+        val lockKey = "scheduled_task_lock"
+        val lockTimeout = 600000L // 10 minutes
+
+        lockService.executeWithLock(lockKey, lockTimeout) {
+            couponRepository.deleteExpiredCoupon()
+        }.also { if (!it) println("Could not acquire lock, task is already running") }
     }
 }
