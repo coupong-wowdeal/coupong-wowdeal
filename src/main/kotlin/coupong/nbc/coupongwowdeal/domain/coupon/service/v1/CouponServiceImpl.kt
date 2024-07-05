@@ -17,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 class CouponServiceImpl(
     private val couponRepository: CouponRepository,
     private val userRepository: UserRepository,
-    private val lockService: LockService
+    private val lockService: LockService,
+    private val couponLockService: CouponLockService
 ) : CouponService {
     override fun getCouponList(userPrincipal: UserPrincipal): List<CouponResponse> {
         val userId = userPrincipal.id
@@ -31,21 +32,9 @@ class CouponServiceImpl(
             .let { CouponInfoResponse.toResponse(it) }
     }
 
-    @Transactional
     override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
         return lockService.executeWithSpinLock("LOCK:COUPON:$couponId", 10000000000) {
-            check(!couponRepository.isCouponIssued(couponId, userId)) {
-                throw IllegalStateException("User already issue coupon")
-            }
-
-            val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
-            val coupon = couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException("coupon", couponId)
-            check(coupon.hasQuantity()) { throw IllegalStateException("Coupon has no quantity") }
-
-            couponRepository.issueCouponToUser(coupon, user)
-                .also { coupon.decreaseQuantity() }
-                .also { couponRepository.save(coupon) }
-                .let { CouponResponse.toResponse(it) }
+            couponLockService.test(couponId, userId)
         } as CouponResponse
     }
 
