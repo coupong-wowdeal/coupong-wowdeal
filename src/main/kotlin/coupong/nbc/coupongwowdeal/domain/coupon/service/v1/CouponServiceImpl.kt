@@ -6,19 +6,21 @@ import coupong.nbc.coupongwowdeal.domain.coupon.dto.CreateCouponRequest
 import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.CouponRepository
 import coupong.nbc.coupongwowdeal.domain.user.repository.v1.UserRepository
 import coupong.nbc.coupongwowdeal.exception.AccessDeniedException
+import coupong.nbc.coupongwowdeal.exception.EmptyQuantityException
 import coupong.nbc.coupongwowdeal.exception.ModelNotFoundException
 import coupong.nbc.coupongwowdeal.infra.redis.LockService
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Service
 class CouponServiceImpl(
     private val couponRepository: CouponRepository,
     private val userRepository: UserRepository,
     private val lockService: LockService,
-    private val couponLockService: CouponLockService
 ) : CouponService {
     override fun getCouponList(userPrincipal: UserPrincipal): List<CouponResponse> {
         val userId = userPrincipal.id
@@ -32,9 +34,22 @@ class CouponServiceImpl(
             .let { CouponInfoResponse.toResponse(it) }
     }
 
+    @Transactional
     override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
-        return lockService.executeWithSpinLock("LOCK:COUPON:$couponId", 10000000000) {
-            couponLockService.issueCoupon(couponId, userId)
+        return lockService.spinUntilLockAcquired("LOCK:COUPON:$couponId", 3000) {
+            check(!couponRepository.isCouponIssued(couponId, userId)) {
+                throw IllegalStateException("User already issue coupon")
+            }
+
+            registerUnlock(couponId)
+
+            val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
+            val coupon = couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException("coupon", couponId)
+            check(coupon.hasQuantity()) { throw EmptyQuantityException() }
+
+            couponRepository.issueCouponToUser(coupon, user)
+                .also { coupon.decreaseQuantity() }
+                .let { CouponResponse.toResponse(it) }
         } as CouponResponse
     }
 
@@ -65,5 +80,13 @@ class CouponServiceImpl(
         lockService.executeWithLock(lockKey, lockTimeout) {
             couponRepository.deleteExpiredCoupon()
         }.also { if (!it) println("Could not acquire lock, task is already running") }
+    }
+
+    private fun registerUnlock(couponId: Long) {
+        TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+            override fun afterCompletion(status: Int) {
+                lockService.unlock("LOCK:COUPON:$couponId")
+            }
+        })
     }
 }

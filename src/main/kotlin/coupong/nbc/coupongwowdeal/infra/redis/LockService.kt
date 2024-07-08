@@ -27,28 +27,26 @@ class LockService(
         }
     }
 
-    fun executeWithSpinLock(key: String, timeout: Long, action: () -> Any): Any {
-        val value = UUID.randomUUID().toString()
+    fun spinUntilLockAcquired(key: String, timeout: Long, action: () -> Any): Any? {
+        val value = ""
         var lockResult = false
 
         var result: Any? = null
 
         while (!lockResult) {
-            Thread.sleep(Random.nextLong(1, 30))
+            Thread.sleep(Random.nextLong(15, 30))
             lockResult = if (redisLockRepository.lock(key, value, timeout)) {
-                try {
-                    result = action()
-                } catch (e: Exception) {
-                    println("Error occured: ${e.message}")
-                    return false
-                } finally {
-                    redisLockRepository.unlock(key, value)
-                }
+                result = action()
                 true
             } else {
                 false
             }
         }
-        return result!!
+
+        return result
+    }
+
+    fun unlock(key: String) {
+        redisLockRepository.unlock(key, "")
     }
 }
