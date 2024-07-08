@@ -27,7 +27,7 @@ import java.time.LocalDateTime
 import java.util.Collections
 import java.util.concurrent.CyclicBarrier
 import java.util.concurrent.Executors
-import kotlin.test.assertEquals
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertTrue
 
 @SpringBootTest
@@ -230,51 +230,34 @@ class CouponServiceDBTest @Autowired constructor(
 
     @Test
     fun `100명의 유저가 50개 재고의 쿠폰을 동시에 발급 시도할 때 재고 소진 이후의 발급시도는 예외를 던진다_CyclicBarrier`() {
-
         // Arrange
         val testUserSize = 100
         val testQuantity = 50
-        val nameSet = hashSetOf<String>()
-        while (nameSet.size < testUserSize) {
-            nameSet.add(Arbitraries.strings().ofMinLength(5).ofMaxLength(10).sample())
-        }
+
+        saveTestData(testUserSize, testQuantity)
 
         val barrier = CyclicBarrier(testUserSize)
         val service = Executors.newFixedThreadPool(testUserSize)
-        val users = mutableListOf<User>()
-        nameSet.forEach {
-            users.add(userRepository.saveAndFlush(User(username = it, password = "test")))
-        }
-
-        val coupon = couponJpaRepository.save(
-            Coupon(
-                name = "test",
-                expirationAt = LocalDateTime.of(2030, 1, 1, 0, 0),
-                totalQuantity = testQuantity,
-                currentQuantity = testQuantity,
-                discountPrice = 10000
-            )
-        )
-
         val exceptions = Collections.synchronizedList(mutableListOf<Exception>())
 
         // Act
-        users.forEach {
+        repeat(testUserSize) { index ->
             service.execute {
                 try {
                     barrier.await()
-                    couponService.issueCouponToUser(coupon.id!!, it.id!!)
+                    couponService.issueCouponToUser(1L, index + 1L)
                 } catch (e: Exception) {
                     println(e.message)
                     exceptions.add(e)
                 }
             }
         }
-
+        service.shutdown()
+        service.awaitTermination(1, TimeUnit.MINUTES)
         // Assert
-        assertEquals(testUserSize - testQuantity, exceptions.size)
+        (testUserSize - testQuantity) shouldBe exceptions.size
         exceptions.forEach { exception ->
-            assertTrue(exception is IllegalArgumentException)
+            assertTrue(exception is EmptyQuantityException)
         }
     }
 }
