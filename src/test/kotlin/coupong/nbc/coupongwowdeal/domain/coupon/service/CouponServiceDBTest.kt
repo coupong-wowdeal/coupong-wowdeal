@@ -6,7 +6,9 @@ import coupong.nbc.coupongwowdeal.domain.coupon.repository.v1.couponuser.CouponU
 import coupong.nbc.coupongwowdeal.domain.coupon.service.v1.CouponService
 import coupong.nbc.coupongwowdeal.domain.user.model.v1.User
 import coupong.nbc.coupongwowdeal.domain.user.repository.v1.UserRepository
+import coupong.nbc.coupongwowdeal.exception.EmptyQuantityException
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeTypeOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -53,6 +55,7 @@ class CouponServiceDBTest @Autowired constructor(
             val testUserSize = 1000
             val testQuantity = 500
             var successCount = 0
+            var exceptionCount = 0
 
             saveTestData(testUserSize, testQuantity)
 
@@ -63,6 +66,7 @@ class CouponServiceDBTest @Autowired constructor(
                         couponService.issueCouponToUser(1L, index.toLong() + 1)
                         successCount++
                     } catch (e: Exception) {
+                        exceptionCount++
                         println("Error happens ${e.message}")
                     }
                 }
@@ -78,8 +82,55 @@ class CouponServiceDBTest @Autowired constructor(
             println("couponJpaRepository.findByIdOrNull(1L)?.currentQuantity: $finalCurrentQuantitiy")
 
             successCount shouldBe testQuantity
+            exceptionCount shouldBe testUserSize - testQuantity
             findAllCouponUserSize shouldBe testQuantity
             finalCurrentQuantitiy shouldBe 0
+        }
+    }
+
+    @Test
+    fun `510명의 유저가 500개 재고의 쿠폰에 동시에 발급 시도를 했을 때 EmptyQuantiyException이 발생하는지 확인 - Coroutine`() {
+        runBlocking {
+            // given
+            val successQuantity = 500
+            val exceptionQuantity = 10
+            val testUserSize = successQuantity + exceptionQuantity
+            var successCount = 0
+            var exceptionCount = 0
+            val exceptionList = mutableListOf<Exception>()
+
+            saveTestData(testUserSize, successQuantity)
+
+            // when
+            val jobs = List(testUserSize) { index ->
+                CoroutineScope(Dispatchers.IO).async {
+                    try {
+                        couponService.issueCouponToUser(1L, index.toLong() + 1)
+                        successCount++
+                    } catch (e: Exception) {
+                        exceptionList.add(e)
+                        exceptionCount++
+                        println("Error happens ${e.message}")
+                    }
+                }
+            }
+
+            jobs.joinAll()
+
+            // then
+            val findAllCouponUserSize = couponUserJpaRepository.findAll().size
+            val finalCurrentQuantity = couponJpaRepository.findByIdOrNull(1L)?.currentQuantity
+            println("successCount: $successCount")
+            println("couponUserJpaRepository.findAll().size: $findAllCouponUserSize")
+            println("couponJpaRepository.findByIdOrNull(1L)?.currentQuantity: $finalCurrentQuantity")
+
+            successCount shouldBe successQuantity
+            exceptionCount shouldBe exceptionQuantity
+            findAllCouponUserSize shouldBe successQuantity
+            finalCurrentQuantity shouldBe 0
+
+            exceptionList.size shouldBe exceptionQuantity
+            exceptionList.forEach { it.shouldBeTypeOf<EmptyQuantityException>() }
         }
     }
 

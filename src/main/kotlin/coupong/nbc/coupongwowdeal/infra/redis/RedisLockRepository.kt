@@ -17,7 +17,7 @@ class RedisLockRepository(
 
     fun unlock(key: String, value: String): Boolean {
         val currentValue = valueOps.get(key)
-        return if (currentValue != null && currentValue == value) {
+        return if (currentValue == value) {
             redisTemplate.delete(key)
             true
         } else {
