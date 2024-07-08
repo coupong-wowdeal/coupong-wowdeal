@@ -11,11 +11,11 @@ class RedisLockRepository(
 ) {
     private val valueOps: ValueOperations<String, String> = redisTemplate.opsForValue()
 
-    fun lock(key: String, value: String, timeout: Long): Boolean {
+    fun lock(key: String, value: String = "", timeout: Long): Boolean {
         return valueOps.setIfAbsent(key, value, timeout, TimeUnit.MILLISECONDS) == true
     }
 
-    fun unlock(key: String, value: String): Boolean {
+    fun unlock(key: String, value: String = ""): Boolean {
         val currentValue = valueOps.get(key)
         return if (currentValue == value) {
             redisTemplate.delete(key)
