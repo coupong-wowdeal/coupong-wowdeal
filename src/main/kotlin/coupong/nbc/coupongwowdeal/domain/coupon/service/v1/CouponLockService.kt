@@ -16,7 +16,7 @@ class CouponLockService(
 ) {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    fun test(couponId: Long, userId: Long): CouponResponse {
+    fun issueCoupon(couponId: Long, userId: Long): CouponResponse {
         check(!couponRepository.isCouponIssued(couponId, userId)) {
             throw IllegalStateException("User already issue coupon")
         }

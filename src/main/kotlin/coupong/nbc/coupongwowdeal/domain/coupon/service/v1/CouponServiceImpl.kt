@@ -34,7 +34,7 @@ class CouponServiceImpl(
 
     override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
         return lockService.executeWithSpinLock("LOCK:COUPON:$couponId", 10000000000) {
-            couponLockService.test(couponId, userId)
+            couponLockService.issueCoupon(couponId, userId)
         } as CouponResponse
     }
 
