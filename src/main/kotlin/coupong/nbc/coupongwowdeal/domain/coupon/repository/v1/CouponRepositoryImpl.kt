@@ -8,6 +8,7 @@ import coupong.nbc.coupongwowdeal.domain.user.model.v1.User
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
+import java.util.Optional
 
 @Repository
 class CouponRepositoryImpl(
@@ -41,16 +42,20 @@ class CouponRepositoryImpl(
 
     override fun issueCouponToUser(coupon: Coupon, user: User): CouponUser {
         return couponUserJpaRepository.save(
-                    CouponUser(
-                        coupon = coupon,
-                        user = user,
-                        issuedAt = LocalDateTime.now()
-                    )
-                )
+            CouponUser(
+                coupon = coupon,
+                user = user,
+                issuedAt = LocalDateTime.now()
+            )
+        )
     }
 
     override fun findCouponById(couponId: Long): Coupon? {
         return couponJpaRepository.findByIdOrNull(couponId)
+    }
+
+    override fun findOptionalCouponById(couponId: Long): Optional<Coupon> {
+        return couponJpaRepository.findById(couponId)
     }
 
     override fun save(coupon: Coupon): Coupon {

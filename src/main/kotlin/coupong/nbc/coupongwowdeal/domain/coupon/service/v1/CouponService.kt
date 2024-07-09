@@ -10,6 +10,7 @@ interface CouponService {
     fun getCouponList(userPrincipal: UserPrincipal): List<CouponResponse>
     fun createCoupon(request: CreateCouponRequest): CouponInfoResponse
     fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse
+    fun issueCouponToUserWithPessimisticLock(couponId: Long, userId: Long): CouponResponse
     fun useCoupon(couponId: Long, userPrincipal: UserPrincipal)
     fun expireCoupon(couponId: Long)
     fun deleteExpiredCoupon()

@@ -49,6 +49,23 @@ class CouponServiceImpl(
             }
         } as CouponResponse
 
+    override fun issueCouponToUserWithPessimisticLock(couponId: Long, userId: Long) =
+        Transactional {
+            check(!couponRepository.isCouponIssued(couponId, userId)) {
+                throw IllegalStateException("User already issue coupon")
+            }
+
+            val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
+            val coupon =
+                couponRepository.findOptionalCouponById(couponId).orElseThrow()
+                    ?: throw ModelNotFoundException("coupon", couponId)
+            check(coupon.hasQuantity()) { throw EmptyQuantityException() }
+
+            couponRepository.issueCouponToUser(coupon, user)
+                .also { coupon.decreaseQuantity() }
+                .let { CouponResponse.toResponse(it) }
+        }
+
     override fun useCoupon(couponId: Long, userPrincipal: UserPrincipal) {
         Transactional {
             val userId = userPrincipal.id

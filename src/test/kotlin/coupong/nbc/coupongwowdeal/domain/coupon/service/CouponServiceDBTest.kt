@@ -55,7 +55,8 @@ class CouponServiceDBTest @Autowired constructor(
             val testUserSize = 1000
             val testQuantity = 500
             var successCount = 0
-            var exceptionCount = 0
+            //var exceptionCount = 0
+            var exceptionSet = mutableSetOf<Exception>()
 
             saveTestData(testUserSize, testQuantity)
 
@@ -66,7 +67,8 @@ class CouponServiceDBTest @Autowired constructor(
                         couponService.issueCouponToUser(1L, index.toLong() + 1)
                         successCount++
                     } catch (e: Exception) {
-                        exceptionCount++
+                        //exceptionCount++
+                        exceptionSet.add(e)
                         println("Error happens ${e.message}")
                     }
                 }
@@ -78,11 +80,14 @@ class CouponServiceDBTest @Autowired constructor(
             val findAllCouponUserSize = couponUserJpaRepository.findAll().size
             val finalCurrentQuantitiy = couponJpaRepository.findByIdOrNull(1L)?.currentQuantity
             println("successCount: $successCount")
+            //println("exceptionCount: $exceptionCount")
+            println("exceptionCount: ${exceptionSet.size}")
             println("couponUserJpaRepository.findAll().size: $findAllCouponUserSize")
             println("couponJpaRepository.findByIdOrNull(1L)?.currentQuantity: $finalCurrentQuantitiy")
 
             successCount shouldBe testQuantity
-            exceptionCount shouldBe testUserSize - testQuantity
+            //exceptionCount shouldBe testUserSize - testQuantity
+            exceptionSet.size shouldBe testUserSize - testQuantity
             findAllCouponUserSize shouldBe testQuantity
             finalCurrentQuantitiy shouldBe 0
         }
