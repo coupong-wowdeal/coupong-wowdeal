@@ -78,6 +78,7 @@ class CouponServiceDBTest @Autowired constructor(
             val findAllCouponUserSize = couponUserJpaRepository.findAll().size
             val finalCurrentQuantitiy = couponJpaRepository.findByIdOrNull(1L)?.currentQuantity
             println("successCount: $successCount")
+            println("coupon.version: ${couponJpaRepository.findByIdOrNull(1L)?.version}")
             println("couponUserJpaRepository.findAll().size: $findAllCouponUserSize")
             println("couponJpaRepository.findByIdOrNull(1L)?.currentQuantity: $finalCurrentQuantitiy")
 

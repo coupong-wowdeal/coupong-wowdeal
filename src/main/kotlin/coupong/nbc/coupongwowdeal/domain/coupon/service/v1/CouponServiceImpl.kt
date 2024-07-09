@@ -11,6 +11,7 @@ import coupong.nbc.coupongwowdeal.exception.AccessDeniedException
 import coupong.nbc.coupongwowdeal.exception.EmptyQuantityException
 import coupong.nbc.coupongwowdeal.exception.ModelNotFoundException
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
+import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -31,23 +32,46 @@ class CouponServiceImpl(
             .let { CouponInfoResponse.toResponse(it) }
     }
 
-    override fun issueCouponToUser(couponId: Long, userId: Long) =
-        Lock.spin("LOCK:COUPON:$couponId", 3000) {
-            Transactional {
-                check(!couponRepository.isCouponIssued(couponId, userId)) {
-                    throw IllegalStateException("User already issue coupon")
+    override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
+        var lockResult = false
+        var response: CouponResponse? = null
+        while (!lockResult) {
+            try {
+                Transactional {
+
+                    while (!lockResult) {
+                        check(!couponRepository.isCouponIssued(couponId, userId)) {
+                            throw IllegalStateException("User already issue coupon")
+                        }
+
+                        val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
+
+                        val coupon =
+                            couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException(
+                                "coupon",
+                                couponId
+                            )
+                        check(coupon.hasQuantity()) { throw EmptyQuantityException() }
+
+                        response = couponRepository.issueCouponToUser(coupon, user)
+                            .also { coupon.decreaseQuantity() }
+                            .also { lockResult = true }
+                            .let { CouponResponse.toResponse(it) }
+                    }
+
+                    response ?: throw IllegalStateException("Coupon issue failed")
                 }
-
-                val user = userRepository.findByIdOrNull(userId) ?: throw ModelNotFoundException("user", userId)
-                val coupon =
-                    couponRepository.findCouponById(couponId) ?: throw ModelNotFoundException("coupon", couponId)
-                check(coupon.hasQuantity()) { throw EmptyQuantityException() }
-
-                couponRepository.issueCouponToUser(coupon, user)
-                    .also { coupon.decreaseQuantity() }
-                    .let { CouponResponse.toResponse(it) }
+            } catch (e: OptimisticLockingFailureException) {
+                println("issueCouponToUser OptimisticLockingFailureException error: $e")
+                Thread.sleep(500)
+            } catch (e: Exception) {
+                println("issueCouponToUser error: $e")
+                throw e
             }
-        } as CouponResponse
+        }
+
+        return response ?: throw IllegalStateException("Coupon issue failed")
+    }
 
     override fun useCoupon(couponId: Long, userPrincipal: UserPrincipal) {
         Transactional {

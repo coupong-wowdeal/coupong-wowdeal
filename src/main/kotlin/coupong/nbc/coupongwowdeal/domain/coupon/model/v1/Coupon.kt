@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Version
 import java.time.LocalDateTime
 
 @Entity
@@ -27,6 +28,9 @@ class Coupon(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
+
+    @Version
+    var version: Long? = null
 ) {
     private fun validate() {
         require(currentQuantity >= 0) { "Quantity must GOE 0" }
