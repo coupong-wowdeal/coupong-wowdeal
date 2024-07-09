@@ -39,6 +39,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
     //redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
