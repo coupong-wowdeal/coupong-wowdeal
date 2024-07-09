@@ -27,7 +27,7 @@ class LockServiceTest(
             println("thread1 run")
 
             resultList.add(
-                Lock.standard(key, 1000000) {
+                Lock.standard(key, 1, TimeUnit.HOURS) {
                     testAction("Thread1")
                 }
             )
@@ -36,7 +36,7 @@ class LockServiceTest(
         val run2 = Runnable {
             println("thread2 run")
             resultList.add(
-                Lock.standard(key, 1000000) {
+                Lock.standard(key, 1, TimeUnit.HOURS) {
                     testAction("Thread2")
                 }
             )
@@ -45,7 +45,7 @@ class LockServiceTest(
         val run3 = Runnable {
             println("thread3 run")
             resultList.add(
-                Lock.standard(key, 1000000) {
+                Lock.standard(key, 1, TimeUnit.HOURS) {
                     testAction("Thread3")
                 }
             )
