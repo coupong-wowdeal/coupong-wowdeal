@@ -43,6 +43,7 @@ dependencies {
     //redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("com.github.codemonstur:embedded-redis:1.4.3")
+    implementation("org.redisson:redisson-spring-boot-starter:3.19.0")
 
     runtimeOnly("com.h2database:h2")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
