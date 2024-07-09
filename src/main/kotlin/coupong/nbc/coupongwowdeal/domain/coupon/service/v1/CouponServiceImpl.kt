@@ -13,6 +13,7 @@ import coupong.nbc.coupongwowdeal.exception.ModelNotFoundException
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.util.concurrent.TimeUnit
 
 @Service
 class CouponServiceImpl(
@@ -32,7 +33,7 @@ class CouponServiceImpl(
     }
 
     override fun issueCouponToUser(couponId: Long, userId: Long) =
-        Lock.spin("LOCK:COUPON:$couponId", 3000) {
+        Lock.spin("LOCK:COUPON:$couponId", 3000, TimeUnit.SECONDS) {
             Transactional {
                 check(!couponRepository.isCouponIssued(couponId, userId)) {
                     throw IllegalStateException("User already issue coupon")
@@ -69,7 +70,7 @@ class CouponServiceImpl(
     }
 
     override fun deleteExpiredCoupon() {
-        Lock.standard("scheduled_task_lock", 600000L) {
+        Lock.standard("scheduled_task_lock", 1L, TimeUnit.HOURS) {
             Transactional { couponRepository.deleteExpiredCoupon() }
         }
     }

@@ -2,6 +2,7 @@ package coupong.nbc.coupongwowdeal.domain.common.aop
 
 import coupong.nbc.coupongwowdeal.infra.redis.LockService
 import org.springframework.stereotype.Component
+import java.util.concurrent.TimeUnit
 
 @Component
 class Lock(
@@ -15,12 +16,12 @@ class Lock(
     companion object {
         private lateinit var advice: LockAdvice
 
-        fun standard(key: String, timeout: Long, function: () -> Unit): Boolean {
-            return advice.standard(key, timeout, function)
+        fun standard(key: String, holdTime: Long, timeUnit: TimeUnit, function: () -> Unit): Boolean {
+            return advice.standard(key, holdTime, timeUnit, function)
         }
 
-        fun <T> spin(key: String, timeout: Long, function: () -> T): T? {
-            return advice.spin(key, timeout, function)
+        fun <T> spin(key: String, tryTime: Long, timeUnit: TimeUnit, function: () -> T): T? {
+            return advice.spin(key, tryTime, timeUnit, function)
         }
     }
 
@@ -28,13 +29,13 @@ class Lock(
     class LockAdvice(
         val lockService: LockService
     ) {
-        fun standard(key: String, timeout: Long, function: () -> Unit): Boolean {
-            return lockService.executeWithLock(key, timeout, function)
+        fun standard(key: String, holdTime: Long, timeUnit: TimeUnit, function: () -> Unit): Boolean {
+            return lockService.executeWithLock(key, holdTime, timeUnit, function)
         }
 
-        fun <T> spin(key: String, timeout: Long, function: () -> T): T? {
+        fun <T> spin(key: String, tryTime: Long, timeUnit: TimeUnit, function: () -> T): T? {
             return try {
-                lockService.spinUntilLockAcquired(key, timeout, function)
+                lockService.spinUntilLockAcquired(key, tryTime, timeUnit, function)
             } finally {
                 lockService.unlock(key)
             }
