@@ -59,8 +59,8 @@
 <img width="1260" alt="스크린샷 2024-07-10 오전 11 34 06" src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/a3481d99-74ae-4cf9-9e57-4486bfbf7292">
 
 ### API Specification
-
-
+<img width="1127" alt="스크린샷 2024-07-10 오전 11 36 40" src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/71dc2ba3-46b1-48ee-b19a-d53255c0814a">
+<p align="left"><a href="https://www.notion.so/itssu/819ab5ae6509479084fad4f9f410890d?v=5ad25cc40e7947b1b42fa72bc86d97bb">API Details</a></p>
 
 # <p align="right"><a href="#-목차-">🔝</a></p>
 
