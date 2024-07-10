@@ -1,50 +1,66 @@
-![header](https://capsule-render.vercel.app/api?type=waving&text=n.Pureun&height=200&color=73C2FB&animation=fadeIn&fontColor=003153)
+<!--![header](https://capsule-render.vercel.app/api?type=venom&text=CouPong&height=200&color=DB4455&animation=fadeIn&fontColor=ffffff&stroke=000000)-->
 
-# 🖥 프로그램 이름 🖥
-### 프로그램을 설명합니다
+<img width="951" alt="스크린샷 2024-07-10 오전 11 00 11" src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/70c1f95e-83e8-4aa7-8055-bb39c7a90f07">
+
+
+# 🖥 CouPong-wowdeal 🖥
+### 정해진 시간에 쿠폰을 선착순 발급하는 프로그램 입니다.
+#### 2024.07.02 ~ 2024.07.11
+
 
 ---
 
 ## 🔷 목차 🔷
-### <p align="left"><a href="#-기능과-사용법">📒 기능과 사용법 </a></p>
+### <p align="left"><a href="#-기술-스택">📒 기술 스택 </a></p>
 ### <p align="left"><a href="#-프로그램-구조">🌃 프로그램 구조 </a></p>
 ### <p align="left"><a href="#-기능-설명">🪐 기능 설명 </a></p>
 ### <p align="left"><a href="#-시도해본-것">🤖 시도해본 것 </a></p>
 
 ---
-## 📒 기능과 사용법
+## 📒 기술 스택
 
-프로그램의 사용법과, 기능을 소개합니다.
+<div align="left">
+<div>
+    <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=Spring-Boot&logoColor=white">
+    <img src="https://img.shields.io/badge/Gradle-02303A?style=flat-square&logo=Gradle&logoColor=white">
+</div>
 
-### 👾 사용법
+<div>
+    <img src="https://img.shields.io/badge/Spring%20Data%20JPA-6DB33F?style=flat-square&logo=Spring-Data-JPA&logoColor=white">
+    <img src="https://img.shields.io/badge/QueryDSL-009630?style=flat-square&logo=Gradle&logoColor=white">
+    <img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat-square&logo=Spring-Security&logoColor=white">
+    <img src="https://img.shields.io/badge/JWT-000000?style=flat-square&logo=JSON-Web-Tokens&logoColor=white">
+</div>
 
-사용법
-```ruby
-ruby
-```
+<div>
+    <img src="https://img.shields.io/badge/H2-000000?style=flat-square&logo=h2&logoColor=white">
+    <img src="https://img.shields.io/badge/Redis-D62124?style=flat-square&logo=Redis&logoColor=white">
+</div>
 
-### 👾 부가기능
+### Tool
+<div>
+    <img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white">
+    <img src="https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white">
+    <img src="https://img.shields.io/badge/IntelliJ IDEA-4A154B?style=flat-square&logo=intellijidea&logoColor=white">
+    <img src="https://img.shields.io/badge/JMeter-D22128?style=flat-square&logo=Apache-JMeter&logoColor=white">
+</div>
+</div>
 
-부가기능 있음 입력
 
-```ruby
-ruby
-```
-
-### 👾 예외처리
-
-예외처리 입력
-
-```ruby
-ruby
-```
 
 # <p align="right"><a href="#-목차-">🔝</a></p>
-
 ---
 ## 🌃 프로그램 구조
 
-프로그램 구조 간략히 입력
+### Wireframe
+<img width="1017" alt="스크린샷 2024-07-10 오전 10 52 01" src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/5a662b86-c163-4504-b1f3-7a01811186a2">
+
+### ERD
+<img width="1260" alt="스크린샷 2024-07-10 오전 11 34 06" src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/a3481d99-74ae-4cf9-9e57-4486bfbf7292">
+
+### API Specification
+
+
 
 # <p align="right"><a href="#-목차-">🔝</a></p>
 
