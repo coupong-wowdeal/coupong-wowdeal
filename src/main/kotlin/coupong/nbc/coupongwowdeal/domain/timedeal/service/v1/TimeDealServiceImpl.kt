@@ -5,11 +5,9 @@ import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.CreateTimeDealRequ
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.UpdateTimeDealRequest
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealCouponResponse
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealResponse
-import coupong.nbc.coupongwowdeal.domain.timedeal.repository.v1.TimeDealJpaRepository
 import coupong.nbc.coupongwowdeal.domain.timedeal.repository.v1.TimeDealRepository
 import coupong.nbc.coupongwowdeal.exception.ModelNotFoundException
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -46,7 +44,6 @@ class TimeDealServiceImpl(
         timeDealRepository.deleteById(timeDealId)
     }
 
-    @Transactional
     override fun issueCoupon(userPrincipal: UserPrincipal, timeDealId: Long): TimeDealCouponResponse {
         val timeDeal =
             timeDealRepository.findById(timeDealId) ?: throw ModelNotFoundException("timedeal", timeDealId)
