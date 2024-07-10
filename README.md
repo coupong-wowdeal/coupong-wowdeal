@@ -4,6 +4,7 @@
 
 
 # 🖥 CouPong-wowdeal 🖥
+# 목차 순서는 협의하겠습니다.
 ### 정해진 시간에 쿠폰을 선착순 발급하는 프로그램 입니다.
 #### 2024.07.02 ~ 2024.07.11
 
@@ -14,7 +15,7 @@
 ### <p align="left"><a href="#-기술-스택">📒 기술 스택 </a></p>
 ### <p align="left"><a href="#-프로그램-구조">🌃 프로그램 구조 </a></p>
 ### <p align="left"><a href="#-참여-개발자">🪐 참여 개발자 </a></p>
-### <p align="left"><a href="#-시도해본-것">🤖 시도해본 것 </a></p>
+### <p align="left"><a href="#-트러블-슈팅">🤖 트러블 슈팅 </a></p>
 
 ---
 ## 📒 기술 스택
@@ -45,7 +46,6 @@
     <img src="https://img.shields.io/badge/JMeter-D22128?style=flat-square&logo=Apache-JMeter&logoColor=white">
 </div>
 </div>
-
 
 
 # <p align="right"><a href="#-목차-">🔝</a></p>
@@ -81,23 +81,13 @@
   </tbody>
 </table>
 
-
+# 깃허브 주소, 프로필 사진, 이미지 이름 필요
 # <p align="right"><a href="#-목차-">🔝</a></p>
 
 ---
-## 🤖 시도해본 것
+## 🤖 트러블 슈팅
 
-### 👾 무엇을 구상했는지
-<details>
-<summary><code>시도한 함수나 클래스</code></summary>
-    
-```kotlin
-  구현
-```
+<p align="left"><a href="https://www.notion.so/itssu/ca94e0c7657549968c03f2d48b822511?v=5558e24423f44731940c0f7984475b65"> 아카이빙 </a></p>
 
-</details>
-
-
-# <p align="right"><a href="#-목차-">🔝</a></p>
-
+# 노션 전체를 걸지, 하나씩 떼어 옮길지 협의 필요
 ---
