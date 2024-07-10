@@ -5,11 +5,9 @@ import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.CreateTimeDealRequ
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.request.UpdateTimeDealRequest
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealCouponResponse
 import coupong.nbc.coupongwowdeal.domain.timedeal.dto.response.TimeDealResponse
-import coupong.nbc.coupongwowdeal.domain.timedeal.repository.v1.TimeDealJpaRepository
 import coupong.nbc.coupongwowdeal.domain.timedeal.repository.v1.TimeDealRepository
 import coupong.nbc.coupongwowdeal.exception.ModelNotFoundException
 import coupong.nbc.coupongwowdeal.infra.security.UserPrincipal
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -51,7 +49,7 @@ class TimeDealServiceImpl(
         val timeDeal =
             timeDealRepository.findById(timeDealId) ?: throw ModelNotFoundException("timedeal", timeDealId)
         check(LocalDateTime.now().isBefore(timeDeal.closedAt)) { throw IllegalStateException("Time deal not opened") }
-        return couponService.issueCouponToUser(timeDeal.couponId, userPrincipal.id)
+        return couponService.issueCouponToUserWithPessimisticLock(timeDeal.couponId, userPrincipal.id)
             .let { TimeDealCouponResponse.toResponse(timeDeal, it) }
     }
 }
