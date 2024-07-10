@@ -13,7 +13,7 @@
 ## 🔷 목차 🔷
 ### <p align="left"><a href="#-기술-스택">📒 기술 스택 </a></p>
 ### <p align="left"><a href="#-프로그램-구조">🌃 프로그램 구조 </a></p>
-### <p align="left"><a href="#-기능-설명">🪐 기능 설명 </a></p>
+### <p align="left"><a href="#-참여-개발자">🪐 참여 개발자 </a></p>
 ### <p align="left"><a href="#-시도해본-것">🤖 시도해본 것 </a></p>
 
 ---
@@ -65,27 +65,21 @@
 # <p align="right"><a href="#-목차-">🔝</a></p>
 
 ---
-## 🪐 기능 설명
+## 🪐 참여 개발자
 
-기능을 구현한 함수와 로직을 설명합니다.
+해당 프로젝트에 참여한 사람들 입니다.
 
-### 👾 class 
-<details>
-<summary><code>Class</code> 설명 </summary>
-
-+ #### <code>함수이름</code>
-
-    = <code>함수</code>설명
-    <details>
-    <summary><code>row code</code></summary>
-    
-    ```kotlin
-        kotlin
-    ```
-    
-    </details>
-    
-</details>
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>팀장 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/npureaun">
+          <img src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/0232c220-f47d-44ad-8c40-e3f588ab6a7d" width="100px;" alt="스크린샷 2024-07-10 오전 11 44 09"/>
+          <br /><sub><b>팀원 : 권지훈</b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : </b></sub></a><br /></td>
+      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : </b></sub></a><br /></td>
+  </tbody>
+</table>
 
 
 # <p align="right"><a href="#-목차-">🔝</a></p>
