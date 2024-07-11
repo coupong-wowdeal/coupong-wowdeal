@@ -4,7 +4,6 @@
 
 
 # 🖥 CouPong-wowdeal 🖥
-# 목차 순서는 협의하겠습니다.
 ### 정해진 시간에 쿠폰을 선착순 발급하는 프로그램 입니다.
 #### 2024.07.02 ~ 2024.07.11
 
@@ -52,6 +51,9 @@
 ---
 ## 🌃 프로그램 구조
 
+### Scenario
+<img width="650" height="650" alt="스크린샷 2024-07-10 오전 10 52 01" src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/11582792/ff281d04-dfca-4877-a4f9-c62a38b247cb">
+
 ### Wireframe
 <img width="1017" alt="스크린샷 2024-07-10 오전 10 52 01" src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/5a662b86-c163-4504-b1f3-7a01811186a2">
 
@@ -81,15 +83,12 @@
   </tbody>
 </table>
 
-# 깃허브 주소, 프로필 사진, 이미지 이름 필요
 # <p align="right"><a href="#-목차-">🔝</a></p>
 
 ---
 ## 🤖 트러블 슈팅
 
 <p align="left"><a href="https://www.notion.so/itssu/ca94e0c7657549968c03f2d48b822511?v=5558e24423f44731940c0f7984475b65"> 아카이빙 </a></p>
-
-# 노션 전체를 걸지, 하나씩 떼어 옮길지 협의 필요
 
 # <p align="right"><a href="#-목차-">🔝</a></p>
 ---
