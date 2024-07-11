@@ -72,12 +72,12 @@
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>팀장 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/mobzzzzz"><img src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/11582792/6449e5aa-b524-41e0-8fa3-045529d5273a" width="100px;" height="80px;" alt=""/><br /><sub><b>팀장 : 노재원</b></sub></a><br /></td>
       <td align="center"><a href="https://github.com/npureaun">
-          <img src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/0232c220-f47d-44ad-8c40-e3f588ab6a7d" width="100px;" alt="스크린샷 2024-07-10 오전 11 44 09"/>
+          <img src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/98468118/0232c220-f47d-44ad-8c40-e3f588ab6a7d" width="100px;" height="80px;" alt="스크린샷 2024-07-10 오전 11 44 09"/>
           <br /><sub><b>팀원 : 권지훈</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>팀원 : </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/devitssu"><img src="https://github.com/coupong-wowdeal/coupong-wowdeal/assets/11582792/2927f63e-ce32-4e8f-894c-5db3482527f2" width="100px;" height="80px;" alt=""/><br /><sub><b>팀원 : 이수진</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/seungheyon"><img src="" width="100px;" height="80px;" alt=""/><br /><sub><b>팀원 : 이승현</b></sub></a><br /></td>
   </tbody>
 </table>
 
