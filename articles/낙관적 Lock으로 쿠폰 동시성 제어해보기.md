@@ -16,6 +16,7 @@ override fun issueCouponToUser(couponId: Long, userId: Long): CouponResponse {
             }
         }
 ```
+![image](https://github.com/coupong-wowdeal/coupong-wowdeal/assets/11582792/caa580d0-aa3d-4c76-a51e-5897ebefb746)
 
 `org.springframework.orm.ObjectOptimisticLockingFailureException: Row was updated or deleted by another transaction`
 
